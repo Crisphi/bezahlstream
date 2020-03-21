@@ -6,6 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.PlatformAbstractions;
+using Swashbuckle.AspNetCore;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace BezahlStream.Backend.Api
 {
@@ -40,6 +45,17 @@ namespace BezahlStream.Backend.Api
 
                 options.Audience = "api1";
             });
+
+            services.AddSwaggerGen(swagger =>
+            {
+                swagger.DescribeAllParametersInCamelCase();
+                swagger.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "BezahlStream Backend Api" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                swagger.IncludeXmlComments(xmlPath);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +65,13 @@ namespace BezahlStream.Backend.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BezahlStream Backend Api");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseIdentityServer();
             app.UseRouting();
