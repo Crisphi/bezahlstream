@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BezahlStream.Backend.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using BezahlStream.Backend.Database;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 
 namespace BezahlStream.Backend.Api
 {
@@ -30,9 +25,12 @@ namespace BezahlStream.Backend.Api
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             services.AddControllers();
             services.AddIdentityServer()
-            .AddInMemoryApiResources(Config.Apis)
-            .AddInMemoryClients(Config.Clients)
-            .AddDeveloperSigningCredential();
+                .AddInMemoryApiResources(Config.Apis)
+                .AddInMemoryClients(Config.Clients)
+                .AddDeveloperSigningCredential();
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", options =>
