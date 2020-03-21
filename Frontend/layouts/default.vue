@@ -40,6 +40,10 @@ export default {
         {
           title: 'Welcome',
           to: '/'
+        },
+        {
+          title: 'Anmeldeformular',
+          to: '/anmeldung'
         }
       ],
       title: 'stage@home'
