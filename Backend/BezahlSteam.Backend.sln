@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BezahlStream.Backend.Api", "src\BezahlStream.Backend.Api\BezahlStream.Backend.Api.csproj", "{B336B8C5-D763-4C36-8102-2E1FA2D72796}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BezahlStream.Backend.Api", "src\BezahlStream.Backend.Api\BezahlStream.Backend.Api.csproj", "{B336B8C5-D763-4C36-8102-2E1FA2D72796}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2C711784-F6E4-4171-9411-C363563F86CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BezahlStream.Backend.Models", "src\BezahlStream.Backend.Models\BezahlStream.Backend.Models.csproj", "{885451B6-BA39-4194-92CB-EB9881B5BF72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BezahlStream.Backend.Models", "src\BezahlStream.Backend.Models\BezahlStream.Backend.Models.csproj", "{885451B6-BA39-4194-92CB-EB9881B5BF72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BezahlStream.Backend.Database", "src\BezahlStream.Backend.Database\BezahlStream.Backend.Database.csproj", "{F330C42C-9C68-42F1-9C49-57ACE8D2C591}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BezahlStream.Backend.Application", "src\BezahlStream.Backend.Application\BezahlStream.Backend.Application.csproj", "{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,14 +47,40 @@ Global
 		{885451B6-BA39-4194-92CB-EB9881B5BF72}.Release|x64.Build.0 = Release|Any CPU
 		{885451B6-BA39-4194-92CB-EB9881B5BF72}.Release|x86.ActiveCfg = Release|Any CPU
 		{885451B6-BA39-4194-92CB-EB9881B5BF72}.Release|x86.Build.0 = Release|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Debug|x64.Build.0 = Debug|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Debug|x86.Build.0 = Debug|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Release|x64.ActiveCfg = Release|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Release|x64.Build.0 = Release|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Release|x86.ActiveCfg = Release|Any CPU
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591}.Release|x86.Build.0 = Release|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Debug|x64.Build.0 = Debug|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Debug|x86.Build.0 = Debug|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Release|x64.ActiveCfg = Release|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Release|x64.Build.0 = Release|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Release|x86.ActiveCfg = Release|Any CPU
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3B173C3C-623D-44E2-BBE9-998370BF2503}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{885451B6-BA39-4194-92CB-EB9881B5BF72} = {2C711784-F6E4-4171-9411-C363563F86CC}
+		{F330C42C-9C68-42F1-9C49-57ACE8D2C591} = {2C711784-F6E4-4171-9411-C363563F86CC}
+		{8DF14D5E-2A65-4911-BBF3-7A084FFB884F} = {2C711784-F6E4-4171-9411-C363563F86CC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B173C3C-623D-44E2-BBE9-998370BF2503}
 	EndGlobalSection
 EndGlobal
