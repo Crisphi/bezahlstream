@@ -1,4 +1,8 @@
 using BezahlStream.Backend.Database;
+using BezahlStream.Backend.Database.Models.User;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +14,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace BezahlStream.Backend.Api
@@ -26,23 +31,33 @@ namespace BezahlStream.Backend.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             string connectionString = Configuration.GetValue<string>("ConnectionString");
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
             services.AddControllers();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+
             services.AddIdentityServer()
-                .AddInMemoryApiResources(Config.Apis)
-                .AddInMemoryClients(Config.Clients)
-                .AddDeveloperSigningCredential();
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                .AddDeveloperSigningCredential()
+                .AddAspNetIdentity<ApplicationUser>();
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
-
-            services.AddAuthentication("Bearer")
-            .AddJwtBearer("Bearer", options =>
+            services.AddAuthentication()
+            .AddJwtBearer(options =>
             {
                 options.Authority = "http://localhost:5000";
                 options.RequireHttpsMetadata = false;
-
+                
                 options.Audience = "api1";
             });
 
@@ -61,6 +76,7 @@ namespace BezahlStream.Backend.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            InitializeDatabase(app);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -75,13 +91,61 @@ namespace BezahlStream.Backend.Api
 
             app.UseIdentityServer();
             app.UseRouting();
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void InitializeDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                context.Database.Migrate();
+                if (!context.Clients.Any())
+                {
+                    foreach (var client in Config.Clients)
+                    {
+                        context.Clients.Add(client.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.IdentityResources.Any())
+                {
+                    foreach (var resource in Config.Ids)
+                    {
+                        context.IdentityResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.ApiResources.Any())
+                {
+                    foreach (var resource in Config.Apis)
+                    {
+                        context.ApiResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                var appDbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+                appDbContext.Database.Migrate();
+
+                if(!appDbContext.Users.Any())
+                {
+                    foreach (var user in Config.User)
+                    {
+                        appDbContext.Users.Add(user);
+                    }
+                    appDbContext.SaveChanges();
+                }
+            }
         }
     }
 }
