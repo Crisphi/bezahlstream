@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -33,8 +34,18 @@ namespace BezahlStream.Backend.Api
         {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             string connectionString = Configuration.GetValue<string>("ConnectionString");
+            string[] corsAllowed = Configuration.GetSection("CorsAllowed").Get<string[]>();
             services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
             services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ApiAccess",
+                builder =>
+                {
+                    builder.WithOrigins(corsAllowed).AllowAnyHeader().AllowAnyMethod();
+                });
+            });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()

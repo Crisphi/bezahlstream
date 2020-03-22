@@ -19,6 +19,11 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
+       <v-toolbar-items class="hidden-xs-only">
+        <v-btn v-for="item in menuItems" :key="item.title" text :to="item.path">
+          {{ item.title }}
+        </v-btn>
+      </v-toolbar-items>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -45,6 +50,9 @@ export default {
           title: 'Kanäle',
           to: '/channels'
         }
+      ],
+      menuItems: [
+        { title: 'Login', path: '/login' }
       ],
       title: 'OnStayge'
     }
