@@ -46,7 +46,7 @@ export default {
           to: '/channels'
         }
       ],
-      title: 'stage@home'
+      title: 'Onstayge'
     }
   }
 }
