@@ -40,6 +40,10 @@ export default {
         {
           title: 'Welcome',
           to: '/'
+        },
+        {
+          title: 'Kanäle',
+          to: '/channels'
         }
       ],
       title: 'stage@home'
