@@ -80,6 +80,12 @@ namespace BezahlStream.Backend.Api
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 swagger.IncludeXmlComments(xmlPath);
+
+                // To nested objects generate on the default way the same id, and swagger don't works if there is a doublicate of a class.
+                swagger.CustomSchemaIds(type => type.ToString());
+
+                // Hach, to get enums diplayed as string not as numbers
+                swagger.SchemaFilter<EnumSchemaFilter>();
             });
 
         }
