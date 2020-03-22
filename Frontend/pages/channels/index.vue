@@ -22,18 +22,24 @@ export default {
     return {
       channels: [
         {
+          avatar:
+            'https://img.icons8.com/cute-clipart/512/000000/user-female.png',
           id: 'id1',
           title: 'Mein Kanal',
           subtitle: 'Meine Beschreibung',
           subscripted: false
         },
         {
+          avatar:
+            'https://img.icons8.com/cute-clipart/512/000000/user-male.png',
           id: 'id2',
           title: 'Best practices',
           subtitle: 'Look out!',
           subscripted: false
         },
         {
+          avatar:
+            'https://img.icons8.com/officel/512/000000/school-director-female-skin-type-4.png',
           id: 'id3',
           title: 'MyDummy',
           subtitle: 'sadfdfdgdg',
@@ -47,6 +53,6 @@ export default {
 
 <style scoped>
 .channel-card {
-  margin: 10px;
+  margin: 16px;
 }
 </style>

@@ -10,9 +10,9 @@
         </v-list-item-subtitle>
       </v-list-item-content>
 
-      <v-list-item-avatar tile size="120" color="grey">
-        <v-avatar>
-          <v-icon dark>mdi-account-circle</v-icon>
+      <v-list-item-avatar size="100" color="grey" rounded>
+        <v-avatar size="72">
+          <v-img :src="channel.avatar" />
         </v-avatar>
       </v-list-item-avatar>
     </v-list-item>
