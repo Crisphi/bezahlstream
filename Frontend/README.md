@@ -1,6 +1,6 @@
 # bezahlstream
 
-> stage@home
+> OnStayge
 
 ## Build Setup
 
