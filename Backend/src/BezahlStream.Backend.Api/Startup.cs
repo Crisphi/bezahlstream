@@ -1,5 +1,5 @@
 using BezahlStream.Backend.Database;
-using BezahlStream.Backend.Database.Models.User;
+using BezahlStream.Backend.Database.Entities.User;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -1,7 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using BezahlStream.Backend.Database.Models.User;
+using BezahlStream.Backend.Database.Entities.User;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Identity;
 
