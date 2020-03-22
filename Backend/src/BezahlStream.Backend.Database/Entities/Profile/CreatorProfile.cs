@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using BezahlStream.Backend.Database.Entities.User;
 
@@ -9,7 +10,8 @@ namespace BezahlStream.Backend.Database.Entities.Profile
     {
         [Key]
         public string Id{ get; set; }
-
+        
+        public string OwnerId{ get; set; }
         public ApplicationUser Owner 
         {
             get;
