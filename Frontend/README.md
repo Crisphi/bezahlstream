@@ -1,6 +1,6 @@
 # bezahlstream
 
-> Onstayge
+> OnStayge
 
 ## Build Setup
 
