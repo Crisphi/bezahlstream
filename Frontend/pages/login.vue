@@ -31,7 +31,7 @@
                     :append-icon-cb="() => (e1 = !e1)"
                     :type="e1 ? 'password' : 'text'"
                     :rules="passwordRules"
-                    :append-icon="e1 ? 'visibility' : 'visibility_off'"
+                    :append-icon="e1 ? 'mdi-eye-off' : 'mdi-eye'"
                     required
                   ></v-text-field>
                   <v-layout justify-space-between>
