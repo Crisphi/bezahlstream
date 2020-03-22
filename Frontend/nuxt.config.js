@@ -44,13 +44,28 @@ export default {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // Doc: https://auth.nuxtjs.org/
+    '@nuxtjs/auth'
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'https://localhost:9443'
+  },
+  /*
+   ** Auth module configuration
+   ** See https://auth.nuxtjs.org/schemes/oauth2.html#usage
+   */
+  auth: {
+    redirect: {
+      login: '/login',
+      home: '/'
+    },
+    strategies: {}
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
