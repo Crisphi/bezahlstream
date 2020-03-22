@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
-    "nuxt": "^2.0.0"
+    "mux.js": "^5.5.1",
+    "nuxt": "^2.0.0",
+    "vue-video-player": "^5.0.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
