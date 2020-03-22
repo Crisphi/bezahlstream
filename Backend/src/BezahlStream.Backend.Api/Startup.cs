@@ -33,9 +33,9 @@ namespace BezahlStream.Backend.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            string connectionString = Configuration.GetValue<string>("ConnectionString");
+            var connectionStringConfig = Configuration.GetSection("ConnectionString");
             string[] corsAllowed = Configuration.GetSection("CorsAllowed").Get<string[]>();
-            services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
+            services.AddDbContext<AppDbContext>(this.DBContextOptionsBuilder(connectionStringConfig, migrationsAssembly));
             services.AddControllers();
 
             services.AddCors(options =>
@@ -54,11 +54,11 @@ namespace BezahlStream.Backend.Api
             services.AddIdentityServer()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = this.DBContextOptionsBuilder(connectionStringConfig, migrationsAssembly);
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = this.DBContextOptionsBuilder(connectionStringConfig, migrationsAssembly);
                 })
                 .AddDeveloperSigningCredential()
                 .AddAspNetIdentity<ApplicationUser>();
@@ -82,6 +82,19 @@ namespace BezahlStream.Backend.Api
                 swagger.IncludeXmlComments(xmlPath);
             });
 
+        }
+
+        public Action<DbContextOptionsBuilder> DBContextOptionsBuilder(IConfigurationSection connectionStringConfig, string migrationsAssembly){
+            string cstring = connectionStringConfig.GetValue<string>("cs");
+            int type =  connectionStringConfig.GetValue<int>("dbType");
+            switch(type){
+                case 1:
+                    return b => b.UseSqlServer(cstring, sql => sql.MigrationsAssembly(migrationsAssembly));
+                case 2:
+                    return b => b.UseMySQL(cstring, sql => sql.MigrationsAssembly(migrationsAssembly));
+            }
+
+            return b => b.UseSqlite(cstring, sql => sql.MigrationsAssembly(migrationsAssembly));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
