@@ -65,7 +65,38 @@ export default {
       home: '/',
       callback: '/auth/callback'
     },
-    strategies: {}
+    strategies: {
+      local: false,
+      bezahlstream: {
+        _schema: 'local',
+        endpoints: {
+          login: {
+            url: '/oauth/token',
+            method: 'post',
+            propertyName: 'access_token'
+          },
+          logout: false,
+          user: {
+            url: 'api/auth/me',
+            method: 'get',
+            propertyName: 'user'
+          }
+        }
+      },
+      facebook: {
+        clientId: process.env.FACEBOOK_CLIENT_ID
+      },
+      google: {
+        clientId: process.env.GOOGLE_CLIENT_ID
+      },
+      github: {
+        clientId: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET
+      },
+      youtube: {
+        clientId: process.env.YOUTUBE_CLIENT_ID
+      }
+    }
   },
   /*
    ** vuetify module configuration
