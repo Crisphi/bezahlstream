@@ -57,7 +57,7 @@ namespace BezahlStream.Backend.Api
             {
                 options.Authority = "http://localhost:5000";
                 options.RequireHttpsMetadata = false;
-                
+
                 options.Audience = "api1";
             });
 
@@ -137,7 +137,7 @@ namespace BezahlStream.Backend.Api
                 var appDbContext = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
                 appDbContext.Database.Migrate();
 
-                if(!appDbContext.Users.Any())
+                if (!appDbContext.Users.Any())
                 {
                     foreach (var user in Config.User)
                     {

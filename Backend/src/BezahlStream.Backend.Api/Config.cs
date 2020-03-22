@@ -19,7 +19,7 @@ public static class Config
         new Client
         {
             ClientId = "client",
-
+            AllowOfflineAccess = true,
             // no interactive user, use the clientid/secret for authentication
             AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
             RedirectUris = { "http://localhost:5000/" },
