@@ -2,6 +2,7 @@ using BezahlStream.Backend.Database;
 using BezahlStream.Backend.Database.Entities.User;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore;
 using System;
@@ -28,9 +30,32 @@ namespace BezahlStream.Backend.Api
 
         public IConfiguration Configuration { get; }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var _loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddConsole();
+            });
+            string[] corsAllowed = { "http://localhost:3000", "http://localhost:5000" };
+            var cors = new DefaultCorsPolicyService(_loggerFactory.CreateLogger<DefaultCorsPolicyService>())
+            {
+                AllowedOrigins = corsAllowed
+            };
+
+            services.AddSingleton<ICorsPolicyService>(cors);
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins(corsAllowed).WithHeaders("*");
+                });
+            });
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             string connectionString = Configuration.GetValue<string>("ConnectionString");
             services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
@@ -89,6 +114,7 @@ namespace BezahlStream.Backend.Api
                 c.RoutePrefix = string.Empty;
             });
 
+            app.UseCors(MyAllowSpecificOrigins); 
             app.UseIdentityServer();
             app.UseRouting();
             app.UseAuthorization();

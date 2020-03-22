@@ -12,10 +12,16 @@
             <v-card-text class="pt-4">
               <div>
                 <v-form ref="form" v-model="valid">
-                  <v-text-field
+                  <!-- <v-text-field
                     v-model="email"
                     label="E-Mail-Adresse"
                     :rules="emailRules"
+                    required
+                  ></v-text-field> -->
+                  <v-text-field
+                    v-model="username"
+                    label="Username"
+                    :rules="usernameRules"
                     required
                   ></v-text-field>
                   <v-text-field
@@ -44,7 +50,7 @@
             </v-card-text>
             <v-divider></v-divider>
             <div class="strategies">
-              <div v-for="strategy in strategies" :key="strategy.key">
+              <div v-for="strategy in strat" :key="strategy.key">
                 <v-btn
                   style="color: white"
                   :style="{ background: strategy.color }"
@@ -78,13 +84,15 @@ export default {
           /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
           'Bitte gib eine valide E-Mail-Adresse an'
       ],
+      username: '',
+      usernameRules: [(v) => !!v || 'Passwort wird benötigt'],
       password: '',
       passwordRules: [(v) => !!v || 'Passwort wird benötigt']
     }
   },
 
   computed: {
-    strategies: () => [
+    strat: () => [
       { key: 'google', name: 'Google', color: '#4284f4', icon: 'google' },
       { key: 'facebook', name: 'Facebook', color: '#3c65c4', icon: 'facebook' },
       { key: 'youtube', name: 'YouTube', color: '#E62117', icon: 'youtube' },
@@ -93,8 +101,15 @@ export default {
   },
 
   methods: {
-    login() {
-      // TODO: waiting for oauth implementation
+    async login() {
+      try {
+        await this.$store.dispatch('auth/login', { data: {
+          username: this.username,
+          password: this.password
+        } })
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }

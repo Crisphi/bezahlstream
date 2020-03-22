@@ -23,11 +23,8 @@ public static class Config
             // no interactive user, use the clientid/secret for authentication
             AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
             RedirectUris = { "http://localhost:5000/" },
-            // secret for authentication
-            ClientSecrets =
-            {
-                new Secret("secret".Sha256())
-            },
+            AllowedCorsOrigins = {"http://localhost:3000"},
+            RequireClientSecret = false,
 
             // scopes that client has access to
             AllowedScopes = { "api1" }
