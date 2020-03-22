@@ -25,7 +25,7 @@
         <v-card-subtitle>schaut mal rein</v-card-subtitle>
 
         <v-card-actions>
-          <v-btn @click="watchVideo()">Vorschau</v-btn>
+          <v-btn to="/watch/2">Vorschau</v-btn>
           <v-btn>Kaufen</v-btn>
         </v-card-actions>
       </v-card>
@@ -77,11 +77,6 @@ export default {
             'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.'
         }
       ]
-    }
-  },
-  methods: {
-    watchVideo() {
-      this.$router.push(`../watch/2`)
     }
   }
 }
