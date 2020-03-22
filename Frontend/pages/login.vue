@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       valid: false,
-      e1: false,
+      e1: true,
       error: null,
       email: '',
       emailRules: [
