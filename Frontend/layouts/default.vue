@@ -21,18 +21,24 @@
       <v-spacer />
     </v-app-bar>
     <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <!-- <v-container>-->
+      <nuxt />
+      <!-- </v-container>-->
+      <!-- <OnStaygeFooter/>-->
     </v-content>
-    <v-footer fixed app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    <!-- <v-footer fixed app>-->
+    <!-- <span>&copy; {{ new Date().getFullYear() }}</span>-->
+    <!-- </v-footer>-->
   </v-app>
 </template>
 
 <script>
+// import OnStaygeFooter from '~/components/OnStaygeFooter.vue';
+
 export default {
+  components: {
+    // OnStaygeFooter,
+  },
   data() {
     return {
       drawer: false,
