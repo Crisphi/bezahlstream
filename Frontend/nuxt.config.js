@@ -62,7 +62,8 @@ export default {
   auth: {
     redirect: {
       login: '/login',
-      home: '/'
+      home: '/',
+      callback: '/auth/callback'
     },
     strategies: {}
   },
