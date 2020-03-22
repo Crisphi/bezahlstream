@@ -72,6 +72,9 @@ namespace BezahlStream.Backend.Api
 
                 // To nested objects generate on the default way the same id, and swagger don't works if there is a doublicate of a class.
                 swagger.CustomSchemaIds(type => type.ToString());
+
+                // Hach, to get enums diplayed as string not as numbers
+                swagger.SchemaFilter<EnumSchemaFilter>();
             });
 
         }
