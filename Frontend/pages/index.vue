@@ -12,5 +12,10 @@
 </template>
 
 <script>
-export default {}
+export default {
+  middleware: ['auth'],
+  options: {
+    auth: false
+  }
+}
 </script>

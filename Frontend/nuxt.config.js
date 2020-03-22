@@ -70,6 +70,9 @@ export default {
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
+  router: {
+    middleware: ['auth']
+  },
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
