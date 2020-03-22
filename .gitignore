@@ -538,3 +538,4 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/vue,sas,vuejs,dotnetcore,aspnetcore,visualstudio,visualstudiocode
 Migrations/
+Backend/src/BezahlStream.Backend.Api/db.sqlite
