@@ -18,7 +18,9 @@
     </v-list-item>
 
     <v-card-actions>
-      <v-btn text @click="showChannel(channel)">Vorbeischauen</v-btn>
+      <v-btn text :to="'/channels/' + channel.id">
+        Vorbeischauen
+      </v-btn>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on" @click="subscribeTo(channel)">
@@ -42,9 +44,6 @@ export default {
     }
   },
   methods: {
-    showChannel(channel) {
-      this.$router.push(`channels/${channel.id}`)
-    },
     subscribeTo(channel) {
       channel.subscripted = !channel.subscripted
     }

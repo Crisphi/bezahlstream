@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -32,9 +33,19 @@ namespace BezahlStream.Backend.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            string connectionString = Configuration.GetValue<string>("ConnectionString");
-            services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
+            var connectionStringConfig = Configuration.GetSection("ConnectionString");
+            string[] corsAllowed = Configuration.GetSection("CorsAllowed").Get<string[]>();
+            services.AddDbContext<AppDbContext>(this.DBContextOptionsBuilder(connectionStringConfig, migrationsAssembly));
             services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ApiAccess",
+                builder =>
+                {
+                    builder.WithOrigins(corsAllowed).AllowAnyHeader().AllowAnyMethod();
+                });
+            });
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
@@ -43,11 +54,11 @@ namespace BezahlStream.Backend.Api
             services.AddIdentityServer()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = this.DBContextOptionsBuilder(connectionStringConfig, migrationsAssembly);
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = this.DBContextOptionsBuilder(connectionStringConfig, migrationsAssembly);
                 })
                 .AddDeveloperSigningCredential()
                 .AddAspNetIdentity<ApplicationUser>();
@@ -69,8 +80,27 @@ namespace BezahlStream.Backend.Api
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 swagger.IncludeXmlComments(xmlPath);
+
+                // To nested objects generate on the default way the same id, and swagger don't works if there is a doublicate of a class.
+                swagger.CustomSchemaIds(type => type.ToString());
+
+                // Hach, to get enums diplayed as string not as numbers
+                swagger.SchemaFilter<EnumSchemaFilter>();
             });
 
+        }
+
+        public Action<DbContextOptionsBuilder> DBContextOptionsBuilder(IConfigurationSection connectionStringConfig, string migrationsAssembly){
+            string cstring = connectionStringConfig.GetValue<string>("cs");
+            int type =  connectionStringConfig.GetValue<int>("dbType");
+            switch(type){
+                case 1:
+                    return b => b.UseSqlServer(cstring, sql => sql.MigrationsAssembly(migrationsAssembly));
+                case 2:
+                    return b => b.UseMySQL(cstring, sql => sql.MigrationsAssembly(migrationsAssembly));
+            }
+
+            return b => b.UseSqlite(cstring, sql => sql.MigrationsAssembly(migrationsAssembly));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
