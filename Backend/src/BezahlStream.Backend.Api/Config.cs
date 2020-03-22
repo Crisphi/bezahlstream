@@ -1,7 +1,9 @@
 
 using System;
 using System.Collections.Generic;
+using BezahlStream.Backend.Database.Entities.User;
 using IdentityServer4.Models;
+using Microsoft.AspNetCore.Identity;
 
 public static class Config
 {
@@ -17,10 +19,10 @@ public static class Config
         new Client
         {
             ClientId = "client",
-
+            AllowOfflineAccess = true,
             // no interactive user, use the clientid/secret for authentication
-            AllowedGrantTypes = GrantTypes.ClientCredentials,
-
+            AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+            RedirectUris = { "http://localhost:5000/" },
             // secret for authentication
             ClientSecrets =
             {
@@ -31,4 +33,25 @@ public static class Config
             AllowedScopes = { "api1" }
         }
     };
+
+    public static IEnumerable<IdentityResource> Ids => new List<IdentityResource>{
+        new IdentityResources.Email()
+    };
+
+    public static IEnumerable<ApplicationUser> User
+    {
+        get
+        {
+            var user = new ApplicationUser()
+            {
+                UserName = "devel",
+                NormalizedUserName = "DEVEL"
+            };
+            user.PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(user, "12345");
+            return new List<ApplicationUser>
+            {
+                user,
+            };
+        }
+    }
 }
