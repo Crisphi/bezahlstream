@@ -82,6 +82,10 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {},
+    /*
+     ** Extract CSS into a separate chunk
+     */
+    extractCSS: true
   }
 }
