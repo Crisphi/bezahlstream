@@ -15,6 +15,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "mux.js": "^5.5.1",
     "nuxt": "^2.0.0",
+    "video.js": "^7.6.6",
     "vue-video-player": "^5.0.2"
   },
   "devDependencies": {

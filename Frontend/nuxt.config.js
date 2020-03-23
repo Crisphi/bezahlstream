@@ -26,7 +26,8 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['@/assets/sass/main.scss'],
+  // css: ['@/assets/sass/main.scss'],
+  css: ['video.js/dist/video-js.css', '@/assets/sass/main.scss'],
   /*
    ** Plugins to load before mounting the App
    */
