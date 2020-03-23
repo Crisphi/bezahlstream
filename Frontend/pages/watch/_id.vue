@@ -30,6 +30,7 @@ export default {
       playerOptions: {
         autoplay: true,
         controls: true,
+        inactivityTimeout: 1000,
         controlBar: {
           timeDivider: false,
           durationDisplay: false
