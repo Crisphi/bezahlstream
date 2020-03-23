@@ -41,13 +41,13 @@
       Neuste Videos
     </h1>
     <v-container class="videos">
-      <img
-        v-for="img in 16"
-        :key="img"
-        class="video"
-        src="~/assets/images/video-placeholder.png"
-        alt="placeholder-image"
-      />
+      <nuxt-link v-for="img in 16" :key="img" to="/watch/2">
+        <img
+          class="video"
+          src="~/assets/images/video-placeholder.png"
+          alt="placeholder-image"
+        />
+      </nuxt-link>
     </v-container>
 
     <v-footer dark padless>
